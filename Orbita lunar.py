@@ -62,8 +62,10 @@ def main():
     velocidad_luna = (1023.055, 0.0)
     velocidad_tierra = (0.0, 0.0)
     contador_1 = 0
-    print("t (s)\t\tt (d)\t\t\tF (N)\t\t\t\t(x, y) (m)\t\t\tR (m)")
-    print("--------------------------------------------------------------------------------------------------------------------")
+    fichero_datos = open("datos.txt", "w")
+    fichero_datos.write("t (s)\t\tt (d)\t\t\tF (N)\t\t\t\t(x, y) (m)\t\t\tR (m)\n")
+    fichero_datos = open("datos.txt", "a")
+    fichero_datos.write("--------------------------------------------------------------------------------------------------------------------\n")
     while contador_1 <= tiempo_total:
         distancia_tierra_luna = distanciaf(posicion_luna, posicion_tierra)
         fuerza_tierra_luna = fuerzaf(CONSTANTE_GRAVITATION_UNIVERSAL, MASA_TIERRA, MASA_LUNA, distancia_tierra_luna)
@@ -72,10 +74,13 @@ def main():
         variacion_velocidad = variacion_velocidadf(acceleracion_luna, tiempo_variacion)
         velocidad_luna = velocidadf(velocidad_luna, variacion_velocidad)
         if contador_1 % 86400 == 0:
-            print("%8.2f\t%.2f\t\t(%.5e, %.5e)\t(%.5e, %.5e)\t\t%.5e" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
+            #print("%8.2f\t%.2f\t\t(%.5e, %.5e)\t(%.5e, %.5e)\t\t%.5e" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
+            # imprimir en un fichero
+            fichero_datos = open("datos.txt", "a")
+            fichero_datos.write("%8.2f\t%.2f\t\t(%.5e, %.5e)\t(%.5e, %.5e)\t\t%.5e\n" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
+            fichero_datos.close()
         posicion_luna = posicionf(posicion_luna, velocidad_luna, tiempo_variacion)
         contador_1 += tiempo_variacion
-    print ("End simulacion")
 
 
 
