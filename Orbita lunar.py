@@ -6,6 +6,8 @@
 from funciones_excepciones import excepciones_float
 # Aqui importamos una libreria entera de operaciones de tuplas
 import libreria_operaciones_tuplas
+# importa la funcion para abrir el txt
+import webbrowser
 
 # Calculo de la distancia entre dos objetos, usando sus coordenadas
 def distanciaf(posicion_1, posicion_2):
@@ -64,7 +66,6 @@ def main():
     contador_1 = 0
     fichero_datos = open("datos.txt", "w")
     fichero_datos.write("t (s)\t\tt (d)\t\t\tF (N)\t\t\t\t(x, y) (m)\t\t\tR (m)\n")
-    fichero_datos = open("datos.txt", "a")
     fichero_datos.write("--------------------------------------------------------------------------------------------------------------------\n")
     while contador_1 <= tiempo_total:
         distancia_tierra_luna = distanciaf(posicion_luna, posicion_tierra)
@@ -75,12 +76,15 @@ def main():
         velocidad_luna = velocidadf(velocidad_luna, variacion_velocidad)
         if contador_1 % 86400 == 0:
             #print("%8.2f\t%.2f\t\t(%.5e, %.5e)\t(%.5e, %.5e)\t\t%.5e" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
-            # imprimir en un fichero
-            fichero_datos = open("datos.txt", "a")
+            # guardar en un fichero
             fichero_datos.write("%8.2f\t%.2f\t\t(%.5e, %.5e)\t(%.5e, %.5e)\t\t%.5e\n" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
-            fichero_datos.close()
         posicion_luna = posicionf(posicion_luna, velocidad_luna, tiempo_variacion)
         contador_1 += tiempo_variacion
+    # cerrar fichero
+    fichero_datos.close()
+
+    # abrir el txt
+    webbrowser.open("datos.txt")
 
 
 
