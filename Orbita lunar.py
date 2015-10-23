@@ -77,7 +77,7 @@ def main():
         if contador_1 % 86400 == 0:
             #print("%8.2f\t%.2f\t\t(%.5e, %.5e)\t(%.5e, %.5e)\t\t%.5e" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
             # guardar en un fichero
-            fichero_datos.write("%8.2f\t%.2f\t\t(%.5e, %.5e)\t(%.5e, %.5e)\t\t%.5e\n" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
+            fichero_datos.write("%8.2f\t%.2f\t\t(%12.5e, %12.5e)\t(%12.5e, %12.5e)\t\t%12.5e\n" % (contador_1, contador_1 / 86400, fuerza_gravitatoria_total[0], fuerza_gravitatoria_total[1], posicion_luna[0], posicion_luna[1], libreria_operaciones_tuplas.modulo_vector(distancia_tierra_luna)))
         posicion_luna = posicionf(posicion_luna, velocidad_luna, tiempo_variacion)
         contador_1 += tiempo_variacion
     # cerrar fichero
