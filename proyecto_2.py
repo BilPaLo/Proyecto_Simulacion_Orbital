@@ -6,6 +6,19 @@ import time
 
 # Esa linea importa un programa de una libreria creado por nosotros que
 # comprueba que el usuario ha entrado datos correctos (float o entero, y ningun otro tipo de datos)
+def excepciones_float(texto_input):
+    dato_valido = False
+
+    while not dato_valido:
+        try:
+            # aqui ponemos los que puede fallar
+            valor = float(input(texto_input))
+            dato_valido = True
+        except:
+        # aqui ponemos el mensaje del error o lo que tiene que hacer si no funciona
+            print("No has insertado un numero decimal")
+    return valor
+
 def excepciones_string_si_no(texto_input):
     dato_valido = False
     while not dato_valido:
@@ -117,6 +130,7 @@ def leer():
 
 
 def mostrar_lista_cuerpos(nombres):
+    os.system("cls")
     print("Lista de cuerpos existentes: ")
     # 'nombres' siendo la clave para buscar los nombres de cuerpos en el fichero
     if len(nombres) == 0:
@@ -126,7 +140,7 @@ def mostrar_lista_cuerpos(nombres):
     else:
         contador = 0
         while contador < len(nombres):
-            print("%d. %s" % (contador + 1,nombres[contador][0]))
+            print("%d. %s" % (contador + 1, nombres[contador][0]))
             contador += 1
         opcion_detalles = excepciones_string_si_no("Quieres ver la informacion detallada de uno de esos cuerpos? Si/No: ")
         if opcion_detalles == "Si":
@@ -137,7 +151,7 @@ def mostrar_lista_cuerpos(nombres):
 
 
 def detalles_cuerpo(nombres):
-    opcion_detalles_cuerpo = excepciones_int_rango("Numero del cuerpo que quieres ver: ", 1, len(nombres))
+    opcion_detalles_cuerpo = excepciones_int_rango("\nNumero del cuerpo que quieres ver: ", 1, len(nombres))
     contador = 0
     for e in nombres[int(opcion_detalles_cuerpo) - 1]:
         if contador == 0:
@@ -161,22 +175,31 @@ def detalles_cuerpo(nombres):
 
 
 
-def anadir_cuerpo():
-    nombre = str(input("Nombre: "))
-    while nombre in nombres:
-        print("Error - Hay un cuerpo con ese nombre que ya existe. Por favor introduzca otro nombre:")
-        nombre = str(input("Nombre: "))
-    masa = float(input("Masa: "))
+def anadir_cuerpo(nombres):
+    os.system("cls")
+    nombre = excepciones_string("\nNombre: ")
+    contador = 0
+    while contador < len(nombres):
+        while nombre == (nombres[contador][0]):
+            print("Error - Hay un cuerpo con ese nombre que ya existe. Por favor introduzca otro nombre:")
+            nombre = str(input("Nombre: "))
+            contador = 0
+        contador += 1
+
+    masa = excepciones_float("\nMasa: ")
     while masa < 0:
-        print("Error - Masa tiene que ser strictamente positiva. Por favor introduzca otra masa:")
+        print("Error - Masa tiene que ser strictamente positiva. Por favor introduzca otra masa: ")
         masa = float(input("Masa: "))
-    img = str(input("Nombre de fichero de la imagen: "))
-    coordenada_x = float(input("Coordenada x del cuerpo: "))
-    coordenada_y = float(input("Coordenada y del cuerpo: "))
-    flag_fijo = str(input("Es fijo ese cuerpo? "))
-    velocidad_x = float(input("Velocidad x del cuerpo: "))
-    velocidad_y = float(input("Velocidad y del cuerpo: "))
-    fichero.write("nombre: %s, masa: %f, img: %s, x: %f, y: %f, vx: %f, vy: %f")
+
+    img = excepciones_string("\nNombre de fichero de la imagen: ")
+    # Comprobar que la imagen exista
+    coordenada_x = excepciones_float("\nCoordenada x del cuerpo: ")
+    coordenada_y = excepciones_float("\nCoordenada y del cuerpo: ")
+    flag_fijo = excepciones_string_si_no("\nEs fijo ese cuerpo? ")
+    velocidad_x = excepciones_float("\nVelocidad x del cuerpo: ")
+    velocidad_y = excepciones_float("\nVelocidad y del cuerpo: ")
+    nombres.append([nombre, masa, img, coordenada_x, coordenada_y, flag_fijo, velocidad_x, velocidad_y])
+    return nombres
 
 def guardar(lista_cuerpos):
     os.system("cls")
@@ -188,21 +211,21 @@ def guardar(lista_cuerpos):
 
     # comprobar que la ruta existe
     while os.path.isfile(nombre_fichero) == False:
-        guardar_proceso(lista_cuerpos)
+        guardar_proceso(lista_cuerpos, nombre_fichero)
     else:
         guardar_sobreescribir = excepciones_string_si_no("Ya existe un archivo con ese nombre. Desea sobreescribir el archivo? (Si)\nO desea guardarlo como un nuevo archivo? (No): ")
         # abrir en formato leer
         if guardar_sobreescribir == "Si":
-            guardar_proceso()
+            guardar_proceso(lista_cuerpos, nombre_fichero)
         else:
             guardar(lista_cuerpos)
 
-def guardar_proceso(lista_cuerpos):
-    fichero = open(nombre_fichero, "w")
+def guardar_proceso(lista_cuerpos, fichero):
+    fichero = open(fichero, "w")
     if lista_cuerpos != []:
         for e in lista_cuerpos:
-            fichero.write("nombre:%s, masa:%d, img: %s, x: %f, y: %f, fijo: %s, vx:%f, vy:%f" % (lista_cuerpos[e[0]], lista_cuerpos[e[1]], lista_cuerpos[e[2]], lista_cuerpos[e[3]], lista_cuerpos[e[4]], lista_cuerpos[e[5]], lista_cuerpos[e[6]], lista_cuerpos[e[7]]))
-            print("Se ha guardado correctamente.")
+            fichero.write("nombre:%s, masa:%f, img: %s, x: %f, y: %f, fijo: %s, vx:%f, vy:%f\n" % (e[0], float(e[1]), e[2], float(e[3]), float(e[4]), e[5], float(e[6]), float(e[7])))
+        print("Se ha guardado correctamente.")
     else:
         print("No hay informacion para guardar.")
     fichero.close()
@@ -223,7 +246,7 @@ def menu_principal():
         elif opcion_menu_principal == "2":
             mostrar_lista_cuerpos(lista_cuerpos)
         elif opcion_menu_principal == "3":
-            anadir_cuerpo()
+            lista_cuerpos = anadir_cuerpo(lista_cuerpos)
         elif opcion_menu_principal == "4":
             eliminar_cuerpo()
         elif opcion_menu_principal == "5":
@@ -239,8 +262,6 @@ def menu_principal():
                 print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a alejandrolorite@opendeusto.es")
                 time.sleep(2)
                 sys.exit(0)
-            else:
-                menu_principal()
 
 
 # Definicion de la funcion main
