@@ -102,13 +102,14 @@ def leer():
                     contador = 0
                     while contador < len(datos_cuerpo_temp):
                         dato_temp = datos_cuerpo_temp[contador]
-                        dato = "".join(dato_temp[1].split())
-                        datos_cuerpo.append(dato)
+                        dato_temp = dato_temp.split(":")
+                        dato_temp = dato_temp[1]
+                        dato_temp = dato_temp.strip()
+                        datos_cuerpo.append(dato_temp)
                         contador += 1
                     lista_cuerpos.append(datos_cuerpo)
 
         print("Se ha leido correctamente.")
-        print(lista_cuerpos)
         time.sleep(1)
 
     return lista_cuerpos
@@ -137,17 +138,17 @@ def mostrar_lista_cuerpos(nombres):
 def detalles_cuerpo(nombres):
     opcion_detalles_cuerpo = excepciones_int_rango("Numero del cuerpo que quieres ver: ", 1, len(nombres))
     for e in nombres:
-        print nombres[(opcion_detalles_cuerpo - 1)[e]]
+        print(nombres[opcion_detalles_cuerpo - 1][e])
 
 
 
 def anadir_cuerpo():
     nombre = str(input("Nombre: "))
-    while nombre is in nombres:
+    while nombre in nombres:
         print("Error - Hay un cuerpo con ese nombre que ya existe. Por favor introduzca otro nombre:")
         nombre = str(input("Nombre: "))
     masa = float(input("Masa: "))
-    while masa is not > 0:
+    while masa < 0:
         print("Error - Masa tiene que ser strictamente positiva. Por favor introduzca otra masa:")
         masa = float(input("Masa: "))
     img = str(input("Nombre de fichero de la imagen: "))
@@ -179,7 +180,7 @@ def guardar(lista_cuerpos):
 
 def guardar_proceso(lista_cuerpos):
     fichero = open(nombre_fichero, "w")
-    if lista_cuerpos is not []:
+    if lista_cuerpos != []:
         for e in lista_cuerpos:
             fichero.write("nombre:%s, masa:%d, img: %s, x: %f, y: %f, fijo: %s, vx:%f, vy:%f" % (lista_cuerpos[e[0]], lista_cuerpos[e[1]], lista_cuerpos[e[2]], lista_cuerpos[e[3]], lista_cuerpos[e[4]], lista_cuerpos[e[5]], lista_cuerpos[e[6]], lista_cuerpos[e[7]]))
             print("Se ha guardado correctamente.")
