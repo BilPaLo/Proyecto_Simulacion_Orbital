@@ -121,11 +121,12 @@ def mostrar_lista_cuerpos(nombres):
     # 'nombres' siendo la clave para buscar los nombres de cuerpos en el fichero
     if len(nombres) == 0:
         print("No se ha encontrado ningun cuerpo en el fichero.")
+        menu_principal()
         # Poner aqui un camino directo a anadir un cuerpo
     else:
-        contador = 1
-        while contador <= len(nombres):
-            print("%d. %s" % (contador,nombres[contador]))
+        contador = 0
+        while contador < len(nombres):
+            print("%d. %s" % (contador + 1,nombres[contador][0]))
             contador += 1
         opcion_detalles = excepciones_string_si_no("Quieres ver la informacion detallada de uno de esos cuerpos? Si/No: ")
         if opcion_detalles == "Si":
@@ -137,8 +138,26 @@ def mostrar_lista_cuerpos(nombres):
 
 def detalles_cuerpo(nombres):
     opcion_detalles_cuerpo = excepciones_int_rango("Numero del cuerpo que quieres ver: ", 1, len(nombres))
-    for e in nombres:
-        print(nombres[opcion_detalles_cuerpo - 1][e])
+    contador = 0
+    for e in nombres[int(opcion_detalles_cuerpo) - 1]:
+        if contador == 0:
+            print("Nombre: ", end="")
+        if contador == 1:
+            print("Masa: ", end="")
+        if contador == 2:
+            print("Imagen: ", end="")
+        if contador == 3:
+            print("Coordenada x: ", end="")
+        if contador == 4:
+            print("Coordenada y: ", end="")
+        if contador == 5:
+            print("Fijo: ", end="")
+        if contador == 6:
+            print("Velocidad x: ", end="")
+        if contador == 7:
+            print("Velocidad y: ", end="")
+        print(e)
+        contador += 1
 
 
 
@@ -194,39 +213,40 @@ def guardar_proceso(lista_cuerpos):
 
 def menu_principal():
     lista_cuerpos = []
-    os.system("cls")
-    print("Menu Principal:\n\n1. Leer\n2. Mostrar\n3. Anadir un cuerpo nuevo\n4. Eliminar un cuerpo\n5. Modificar los datos de un cuerpo\n6. Guardar")
-    opcion_menu_principal = excepciones_int_rango_exit("\nIntroduce que opcion desea realizar, pulsa q/Q para salir: ", 1, 6)
-
-    if opcion_menu_principal == "1":
-        lista_cuerpos = leer()
-        menu_principal()
-    elif opcion_menu_principal == "2":
-        mostrar_lista_cuerpos(lista_cuerpos)
-    elif opcion_menu_principal == "3":
-        anadir_cuerpo()
-    elif opcion_menu_principal == "4":
-        eliminar_cuerpo()
-    elif opcion_menu_principal == "5":
-        modificar_datos_cuerpo()
-    elif opcion_menu_principal == "6":
-        guardar(lista_cuerpos)
-    elif opcion_menu_principal == "q" or opcion_menu_principal == "Q":
-        opcion_salir = excepciones_string_si_no("Estas seguro de que quieres salir? Si/No: ")
-        if opcion_salir == "Si":
-            opcion_salir_guardar = excepciones_string_si_no("Quieres guardar el archivo antes de salir? Si/No: ")
-            if opcion_salir_guardar == "Si":
-                guardar(lista_cuerpos)
-            print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a alejandrolorite@opendeusto.es")
-            time.sleep(2)
-            sys.exit(0)
-        else:
-            menu_principal()
+    verdadero = True
+    while verdadero:
+        os.system("cls")
+        print("Menu Principal:\n\n1. Leer\n2. Mostrar\n3. Anadir un cuerpo nuevo\n4. Eliminar un cuerpo\n5. Modificar los datos de un cuerpo\n6. Guardar")
+        opcion_menu_principal = excepciones_int_rango_exit("\nIntroduce que opcion desea realizar, pulsa q/Q para salir: ", 1, 6)
+        if opcion_menu_principal == "1":
+            lista_cuerpos = leer()
+        elif opcion_menu_principal == "2":
+            mostrar_lista_cuerpos(lista_cuerpos)
+        elif opcion_menu_principal == "3":
+            anadir_cuerpo()
+        elif opcion_menu_principal == "4":
+            eliminar_cuerpo()
+        elif opcion_menu_principal == "5":
+            modificar_datos_cuerpo()
+        elif opcion_menu_principal == "6":
+            guardar(lista_cuerpos)
+        elif opcion_menu_principal == "q" or opcion_menu_principal == "Q":
+            opcion_salir = excepciones_string_si_no("Estas seguro de que quieres salir? Si/No: ")
+            if opcion_salir == "Si":
+                opcion_salir_guardar = excepciones_string_si_no("Quieres guardar el archivo antes de salir? Si/No: ")
+                if opcion_salir_guardar == "Si":
+                    guardar(lista_cuerpos)
+                print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a alejandrolorite@opendeusto.es")
+                time.sleep(2)
+                sys.exit(0)
+            else:
+                menu_principal()
 
 
 # Definicion de la funcion main
 
 def main():
+    lista_cuerpos = []
     menu_principal()
 
 
