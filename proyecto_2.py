@@ -200,7 +200,7 @@ def anadir_cuerpo(nombres):
     # Comprobar que la imagen exista
     coordenada_x = excepciones_float("\nCoordenada x del cuerpo: ")
     coordenada_y = excepciones_float("\nCoordenada y del cuerpo: ")
-    flag_fijo = excepciones_string_si_no("\nEs fijo ese cuerpo? ")
+    flag_fijo = excepciones_string_si_no("\nEs fijo ese cuerpo? Si/No: ")
     velocidad_x = excepciones_float("\nVelocidad x del cuerpo: ")
     velocidad_y = excepciones_float("\nVelocidad y del cuerpo: ")
     nombres.append([nombre, masa, img, coordenada_x, coordenada_y, flag_fijo, velocidad_x, velocidad_y])
@@ -232,43 +232,78 @@ def modificar_datos(nombres):
     os.system('clear')
     print("Lista de cuerpos existentes: ")
     if len(nombres) == 0:
-        print("No se ha encontrado ningun cuerpo en el fichero.")
+        print("No se ha encontrado ningun cuerpo en el fichero.\nSe volvera al menu principal.")
+        time.sleep(2)
     else:
-        contador = 0
-        while contador < len(nombres):
-            print("%d. %s" % (contador + 1, nombres[contador][0]))
-            contador += 1
-        opcion_eliminar = excepciones_int_rango_exit("Introduce el numero del cuerpo que quiere eliminar o q/Q para volver al menu principal: ", 0, len(nombres) - 1)
-        for e in nombres[int(opcion_eliminar) - 1]:
-            if contador == 0:
-                print("Nombre: ", end="")
-            if contador == 1:
-                print("Masa: ", end="")
-            if contador == 2:
-                print("Imagen: ", end="")
-            if contador == 3:
-                print("Coordenada x: ", end="")
-            if contador == 4:
-                print("Coordenada y: ", end="")
-            if contador == 5:
-                print("Fijo: ", end="")
-            if contador == 6:
-                print("Velocidad x: ", end="")
-            if contador == 7:
-                print("Velocidad y: ", end="")
-            print(e)
-            contador += 1
+        contador1 = 0
+        contador2 = 0
+        while contador1 < len(nombres):
+            print("%d. %s" % (contador1 + 1, nombres[contador1][0]))
+            contador1 += 1
+        opcion_modificar_cuerpo = excepciones_int_rango_exit("Introduce el numero del cuerpo que quiere eliminar o q/Q para volver al menu principal: ", 1, len(nombres))
+        if opcion_modificar_cuerpo.isnumeric():
+            opcion_modificar_cuerpo = int(opcion_modificar_cuerpo)
+            for e in nombres[opcion_modificar_cuerpo - 1]:
+                if contador2 == 0:
+                    print("\n1. Nombre: ", end="")
+                if contador2 == 1:
+                    print("2. Masa: ", end="")
+                if contador2 == 2:
+                    print("3. Imagen: ", end="")
+                if contador2 == 3:
+                    print("4. Coordenada x: ", end="")
+                if contador2 == 4:
+                    print("5. Coordenada y: ", end="")
+                if contador2 == 5:
+                    print("6. Fijo: ", end="")
+                if contador2 == 6:
+                    print("7. Velocidad x: ", end="")
+                if contador2 == 7:
+                    print("8. Velocidad y: ", end="")
+                print(e)
+                contador2 += 1
+            opcion_modificar_dato = excepciones_int_rango_exit("\nIntroduce el numero del dato que quieres modificar o pulsa q/Q para volver a selecionar un cuerpo: ", 1, len(nombres[int(opcion_modificar_cuerpo) - 1]))
+            if opcion_modificar_dato.isnumeric():
+                opcion_modificar_dato = int(opcion_modificar_dato)
+                if opcion_modificar_dato == 1:
+                    nombre = excepciones_string("\nNombre: ")
+                    contador = 0
+                    while contador < len(nombres):
+                        while nombre == (nombres[contador][0]):
+                            print("Error - Hay un cuerpo con ese nombre que ya existe. Por favor introduzca otro nombre:")
+                            nombre = str(input("Nombre: "))
+                            contador = 0
+                        contador += 1
+                    nombres[opcion_modificar_cuerpo - 1][0] = nombre
+                elif opcion_modificar_dato == 2:
+                    masa = excepciones_float("\nMasa: ")
+                    while masa < 0:
+                        print("Error - Masa tiene que ser strictamente positiva. Por favor introduzca otra masa: ")
+                        masa = float(input("Masa: "))
+                    nombres[opcion_modificar_cuerpo - 1][1] = masa
 
-    # imprimir la lista de cuerpos y a cada cuerpo establecerle un numero
-    # seleccion de un numero
-    # abrir cuerpo correspondiente al numero
-    # mostrar su informacion con un numero que hace referencia a cada elemento
-    # el usuario determina el numero(el elemento quiere modificar)
-    # si no existe ese elemento el programa lo notifica y le vuelve a mostrar la lista de elementos a elegir
-    # el usuario modifica el valor y se le ofrece la opcion de salir
-    # se le pregunta si quiere modificar otro dato: ->SI: se le muestra el menu de los cuerpos ->NO: se le lleva al menu principal
-    # (si podemos mostrarle el menu de los elementos del dato seleccionado mejor)(SOLO SI NOS SOBRA TIEMPO)
+                elif opcion_modificar_dato == 3:
+                    img = excepciones_string("\nNombre de fichero de la imagen: ")
+                    nombres[opcion_modificar_cuerpo - 1][2] = img
+                elif opcion_modificar_dato == 4:
+                    coordenada_x = excepciones_float("\nCoordenada x del cuerpo: ")
+                    nombres[opcion_modificar_cuerpo - 1][3] = coordenada_x
+                elif opcion_modificar_dato == 5:
+                    coordenada_y = excepciones_float("\nCoordenada y del cuerpo: ")
+                    nombres[opcion_modificar_cuerpo - 1][4] = coordenada_y
+                elif opcion_modificar_dato == 6:
+                    flag_fijo = excepciones_string_si_no("\nEs fijo ese cuerpo? Si/No: ")
+                    nombres[opcion_modificar_cuerpo - 1][5] = flag_fijo
+                elif opcion_modificar_dato == 7:
+                    velocidad_x = excepciones_float("\nVelocidad x del cuerpo: ")
+                    nombres[opcion_modificar_cuerpo - 1][6] = velocidad_x
+                elif opcion_modificar_dato == 8:
+                    velocidad_y = excepciones_float("\nVelocidad y del cuerpo: ")
+                    nombres[opcion_modificar_cuerpo - 1][7] = velocidad_y
+            else:
+                modificar_datos()
 
+        return nombres
 
 def guardar(lista_cuerpos):
     os.system("cls")
@@ -299,8 +334,7 @@ def guardar_proceso(lista_cuerpos, fichero):
     else:
         print("No hay informacion para guardar.")
     fichero.close()
-    time.sleep(1)
-    menu_principal()
+    time.sleep(2)
 
 # def del menu Principal
 
@@ -330,7 +364,7 @@ def menu_principal():
                 opcion_salir_guardar = excepciones_string_si_no("Quieres guardar el archivo antes de salir? Si/No: ")
                 if opcion_salir_guardar == "Si":
                     guardar(lista_cuerpos)
-                print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a alejandrolorite@opendeusto.es")
+                print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a innovadeusto@soporte.es")
                 time.sleep(2)
                 sys.exit(0)
 
