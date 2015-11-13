@@ -137,7 +137,8 @@ def mostrar_lista_cuerpos(nombres):
     print("Lista de cuerpos existentes: ")
     # 'nombres' siendo la clave para buscar los nombres de cuerpos en el fichero
     if len(nombres) == 0:
-        print("No se ha encontrado ningun cuerpo en el fichero.")
+        print("No se ha encontrado ningun cuerpo en el fichero.\nSe volvera al menu principal.")
+        time.sleep(2)
         # Poner aqui un camino directo a anadir un cuerpo
     else:
         contador = 0
@@ -208,6 +209,27 @@ def anadir_cuerpo(nombres):
 def eliminar_cuerpo(nombres):
     os.system("cls")
     os.system('clear')
+    print("Lista de cuerpos existentes:\n")
+    if len(nombres) == 0:
+        print("No se ha encontrado ningun cuerpo en el fichero.\nSe volvera al menu principal.")
+        time.sleep(2)
+    else:
+        contador = 0
+        while contador < len(nombres):
+            print("%d. %s" % (contador + 1, nombres[contador][0]))
+            contador += 1
+        opcion_eliminar = excepciones_int_rango_exit("\nIntroduce el numero del cuerpo que quiere eliminar o q/Q para volver al menu principal: ", 1, len(nombres))
+        del nombres[int(opcion_eliminar) - 1]
+        print("El cuerpo se ha eliminado correctamente")
+        opcion_eliminar_si_no = excepciones_string_si_no("Quiere eliminar otro cuerpo? (Si/No): ")
+        if opcion_eliminar_si_no == "Si":
+            eliminar_cuerpo(nombres)
+        return nombres
+
+
+def modificar_datos(nombres):
+    os.system("cls")
+    os.system('clear')
     print("Lista de cuerpos existentes: ")
     if len(nombres) == 0:
         print("No se ha encontrado ningun cuerpo en el fichero.")
@@ -217,7 +239,7 @@ def eliminar_cuerpo(nombres):
             print("%d. %s" % (contador + 1, nombres[contador][0]))
             contador += 1
         opcion_eliminar = excepciones_int_rango_exit("Introduce el numero del cuerpo que quiere eliminar o q/Q para volver al menu principal: ", 0, len(nombres) - 1)
-        ####for e in nombres[int(opcion_eliminar) - 1]:
+        for e in nombres[int(opcion_eliminar) - 1]:
             if contador == 0:
                 print("Nombre: ", end="")
             if contador == 1:
@@ -236,20 +258,7 @@ def eliminar_cuerpo(nombres):
                 print("Velocidad y: ", end="")
             print(e)
             contador += 1
-        # Ahora la parte dificil de eliminar un cuerpo
 
-
-
-    # se le pide que introduzca el nombre del cuerpo que quiere eliminar
-    # en la misma pantalla se le tiene que ofrecer la opcion de volver atras, es decir, la opcion de no eliminar ningun cuerpo
-    # si el cuerpo que escribe no existe se le notifica y se vuelve a mostrar la opcion de borrar
-    # despues de borrar un cuerpo se comprueba si quedan mas cuerpos
-    # si quedan mas cuerpos se le ofrece la opcion anterior de borrar otro
-    # si no quedan mas cuerpos se le notifica y se vuelve al menu principal
-
-def modificar_datos(nombres):
-    os.system("cls")
-    os.system('clear')
     # imprimir la lista de cuerpos y a cada cuerpo establecerle un numero
     # seleccion de un numero
     # abrir cuerpo correspondiente al numero
