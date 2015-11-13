@@ -1,6 +1,7 @@
 import sys
 import os.path
 import time
+import os
 
 
 
@@ -84,6 +85,7 @@ def excepciones_string(texto_input):
 
 def leer():
     os.system("cls")
+    os.system('clear')
     lista_cuerpos = []
 
     #  preguntar el fichero
@@ -174,6 +176,7 @@ def detalles_cuerpo(nombres):
 
 def anadir_cuerpo(nombres):
     os.system("cls")
+    os.system('clear')
     nombre = excepciones_string("\nNombre: ")
     contador = 0
     while contador < len(nombres):
@@ -200,6 +203,7 @@ def anadir_cuerpo(nombres):
 
 def eliminar_cuerpo(nombres):
     os.system("cls")
+    os.system('clear')
     print("Lista de cuerpos existentes: ")
     if len(nombres) == 0:
         print("No se ha encontrado ningun cuerpo en el fichero.")
@@ -240,7 +244,8 @@ def eliminar_cuerpo(nombres):
     # si no quedan mas cuerpos se le notifica y se vuelve al menu principal
 
 def modificar_datos(nombres):
-
+    os.system("cls")
+    os.system('clear')
     # imprimir la lista de cuerpos y a cada cuerpo establecerle un numero
     # seleccion de un numero
     # abrir cuerpo correspondiente al numero
@@ -254,6 +259,7 @@ def modificar_datos(nombres):
 
 def guardar(lista_cuerpos):
     os.system("cls")
+    os.system('clear')
 
     #  preguntar el fichero
     nombre_fichero = excepciones_string("Escriba en que fichero desea guardar la informacion: ")
@@ -290,6 +296,7 @@ def menu_principal():
     verdadero = True
     while verdadero:
         os.system("cls")
+        os.system('clear')
         print("Menu Principal:\n\n1. Leer\n2. Mostrar\n3. Anadir un cuerpo nuevo\n4. Eliminar un cuerpo\n5. Modificar los datos de un cuerpo\n6. Guardar")
         opcion_menu_principal = excepciones_int_rango_exit("\nIntroduce que opcion desea realizar, pulsa q/Q para salir: ", 1, 6)
         if opcion_menu_principal == "1":
