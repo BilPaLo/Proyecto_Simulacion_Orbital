@@ -7,6 +7,13 @@ import os
 
 # Esa linea importa un programa de una libreria creado por nosotros que
 # comprueba que el usuario ha entrado datos correctos (float o entero, y ningun otro tipo de datos)
+def os_usuario():
+    if sys.platform == "win32":
+        os.system("cls")
+    else:
+        os.system('clear')
+
+
 def excepciones_float(texto_input):
     dato_valido = False
 
@@ -84,8 +91,7 @@ def excepciones_string(texto_input):
 
 
 def leer():
-    os.system("cls")
-    os.system('clear')
+    os_usuario()
     lista_cuerpos = []
 
     #  preguntar el fichero
@@ -132,8 +138,7 @@ def leer():
 
 
 def mostrar_lista_cuerpos(nombres):
-    os.system("cls")
-    os.system('clear')
+    os_usuario()
     print("Lista de cuerpos existentes: ")
     # 'nombres' siendo la clave para buscar los nombres de cuerpos en el fichero
     if len(nombres) == 0:
@@ -180,8 +185,7 @@ def detalles_cuerpo(nombres):
 
 
 def anadir_cuerpo(nombres):
-    os.system("cls")
-    os.system('clear')
+    os_usuario()
     nombre = excepciones_string("\nNombre: ")
     contador = 0
     while contador < len(nombres):
@@ -207,8 +211,7 @@ def anadir_cuerpo(nombres):
     return nombres
 
 def eliminar_cuerpo(nombres):
-    os.system("cls")
-    os.system('clear')
+    os_usuario()
     print("Lista de cuerpos existentes:\n")
     if len(nombres) == 0:
         print("No se ha encontrado ningun cuerpo en el fichero.\nSe volvera al menu principal.")
@@ -228,8 +231,7 @@ def eliminar_cuerpo(nombres):
 
 
 def modificar_datos(nombres):
-    os.system("cls")
-    os.system('clear')
+    os_usuario()
     print("Lista de cuerpos existentes: ")
     if len(nombres) == 0:
         print("No se ha encontrado ningun cuerpo en el fichero.\nSe volvera al menu principal.")
@@ -306,9 +308,7 @@ def modificar_datos(nombres):
         return nombres
 
 def guardar(lista_cuerpos):
-    os.system("cls")
-    os.system('clear')
-
+    os_usuario()
     #  preguntar el fichero
     nombre_fichero = excepciones_string("Escriba en que fichero desea guardar la informacion: ")
     if nombre_fichero.find(".txt") == -1:
@@ -342,8 +342,7 @@ def menu_principal():
     lista_cuerpos = []
     verdadero = True
     while verdadero:
-        os.system("cls")
-        os.system('clear')
+        os_usuario()
         print("Menu Principal:\n\n1. Leer\n2. Mostrar\n3. Anadir un cuerpo nuevo\n4. Eliminar un cuerpo\n5. Modificar los datos de un cuerpo\n6. Guardar")
         opcion_menu_principal = excepciones_int_rango_exit("\nIntroduce que opcion desea realizar, pulsa q/Q para salir: ", 1, 6)
         if opcion_menu_principal == "1":
