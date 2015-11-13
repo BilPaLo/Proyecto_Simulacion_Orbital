@@ -133,6 +133,7 @@ def leer():
 
 def mostrar_lista_cuerpos(nombres):
     os.system("cls")
+    os.system('clear')
     print("Lista de cuerpos existentes: ")
     # 'nombres' siendo la clave para buscar los nombres de cuerpos en el fichero
     if len(nombres) == 0:
@@ -171,6 +172,9 @@ def detalles_cuerpo(nombres):
             print("Velocidad y: ", end="")
         print(e)
         contador += 1
+    opcion_detalles_cuerpo_si_no = excepciones_string_si_no("Quieres volver al menu principal? (Si) o quieres ver otro cuerpo? (No): ")
+    if opcion_detalles_cuerpo_si_no == "No":
+        mostrar_lista_cuerpos(nombres)
 
 
 
@@ -213,7 +217,7 @@ def eliminar_cuerpo(nombres):
             print("%d. %s" % (contador + 1, nombres[contador][0]))
             contador += 1
         opcion_eliminar = excepciones_int_rango_exit("Introduce el numero del cuerpo que quiere eliminar o q/Q para volver al menu principal: ", 0, len(nombres) - 1)
-        ############for e in nombres[int(opcion_eliminar) - 1]:
+        ####for e in nombres[int(opcion_eliminar) - 1]:
             if contador == 0:
                 print("Nombre: ", end="")
             if contador == 1:
