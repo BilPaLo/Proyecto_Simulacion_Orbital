@@ -47,9 +47,8 @@ def excepciones_int_rango_exit(texto_input, numero_min,numero_max):
         try:
             # aqui ponemos lo que puede fallar
             valor = str(input(texto_input))
-            if valor.isdigit():
-                if numero_min <= int(valor) <= numero_max:
-                    dato_valido = True
+            if valor.isdigit() and numero_min <= int(valor) <= numero_max:
+                dato_valido = True
             elif valor == "q":
                 dato_valido = True
             elif valor == "Q":
@@ -222,11 +221,12 @@ def eliminar_cuerpo(nombres):
             print("%d. %s" % (contador + 1, nombres[contador][0]))
             contador += 1
         opcion_eliminar = excepciones_int_rango_exit("\nIntroduce el numero del cuerpo que quiere eliminar o q/Q para volver al menu principal: ", 1, len(nombres))
-        del nombres[int(opcion_eliminar) - 1]
-        print("El cuerpo se ha eliminado correctamente")
-        opcion_eliminar_si_no = excepciones_string_si_no("Quiere eliminar otro cuerpo? (Si/No): ")
-        if opcion_eliminar_si_no == "Si":
-            eliminar_cuerpo(nombres)
+        if opcion_eliminar.isnumeric():
+            del nombres[int(opcion_eliminar) - 1]
+            print("El cuerpo se ha eliminado correctamente")
+            opcion_eliminar_si_no = excepciones_string_si_no("Quiere eliminar otro cuerpo? (Si/No): ")
+            if opcion_eliminar_si_no == "Si":
+                eliminar_cuerpo(nombres)
         return nombres
 
 
@@ -242,7 +242,7 @@ def modificar_datos(nombres):
         while contador1 < len(nombres):
             print("%d. %s" % (contador1 + 1, nombres[contador1][0]))
             contador1 += 1
-        opcion_modificar_cuerpo = excepciones_int_rango_exit("Introduce el numero del cuerpo que quiere eliminar o q/Q para volver al menu principal: ", 1, len(nombres))
+        opcion_modificar_cuerpo = excepciones_int_rango_exit("Introduce el numero del cuerpo que quiere modificar o q/Q para volver al menu principal: ", 1, len(nombres))
         if opcion_modificar_cuerpo.isnumeric():
             opcion_modificar_cuerpo = int(opcion_modificar_cuerpo)
             for e in nombres[opcion_modificar_cuerpo - 1]:
@@ -334,7 +334,7 @@ def guardar_proceso(lista_cuerpos, fichero):
     else:
         print("No hay informacion para guardar.")
     fichero.close()
-    time.sleep(2)
+    time.sleep(1)
 
 # def del menu Principal
 
