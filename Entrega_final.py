@@ -22,41 +22,48 @@ def iniciar():
     os_usuario()
     lista_cuerpos = []
 
-    nombre_fichero = ex.excepciones_exit("Escriba el nombre del fichero del que desea cargar datos de cuerpos espaciales: ")
-    while nombre_fichero != -1:
+    nombre_fichero = ex.excepciones_string("Escriba el nombre del fichero del que desea cargar datos de cuerpos espaciales: ")
+    if nombre_fichero == "q" or nombre_fichero == "Q":
+        sys.exit(0)
+    else:
         if nombre_fichero.find(".txt") == -1:
             nombre_fichero += ".txt"
 
-        while os.path.isfile(nombre_fichero) == False:
-            print("No existe ese fichero.\n")
-            nombre_fichero = ex.excepciones_exit("Escriba que fichero desea leer: ")
-
+    while os.path.isfile(nombre_fichero) == False or nombre_fichero == "q" or nombre_fichero == "Q":
+        print("No existe ese fichero.\n")
+        nombre_fichero = ex.excepciones_string("Escriba que fichero desea leer: ")
+        if nombre_fichero == "q" or nombre_fichero == "Q":
+            sys.exit(0)
         else:
-            fichero = open(nombre_fichero, "r")
+            if nombre_fichero.find(".txt") == -1:
+                nombre_fichero += ".txt"
 
-            fin_fichero = False
-            while not fin_fichero:
-                linea = fichero.readline()
-                if len(linea) == 0:
-                    fin_fichero = True
-                else:
-                    if "nombre:" in linea:
-                        datos_cuerpo_temp = linea.split(", ")
-                        datos_cuerpo = []
-                        contador = 0
-                        while contador < len(datos_cuerpo_temp):
-                            dato_temp = datos_cuerpo_temp[contador]
-                            dato_temp = dato_temp.split(":")
-                            dato_temp = dato_temp[1]
-                            dato_temp = dato_temp.strip()
-                            datos_cuerpo.append(dato_temp)
-                            contador += 1
-                        lista_cuerpos.append(datos_cuerpo)
+    else:
+        fichero = open(nombre_fichero, "r")
 
-            print("Se ha leido correctamente.")
-            time.sleep(1)
+        fin_fichero = False
+        while not fin_fichero:
+            linea = fichero.readline()
+            if len(linea) == 0:
+                fin_fichero = True
+            else:
+                if "nombre:" in linea:
+                    datos_cuerpo_temp = linea.split(", ")
+                    datos_cuerpo = []
+                    contador = 0
+                    while contador < len(datos_cuerpo_temp):
+                        dato_temp = datos_cuerpo_temp[contador]
+                        dato_temp = dato_temp.split(":")
+                        dato_temp = dato_temp[1]
+                        dato_temp = dato_temp.strip()
+                        datos_cuerpo.append(dato_temp)
+                        contador += 1
+                    lista_cuerpos.append(datos_cuerpo)
 
-        return lista_cuerpos
+        print("Se ha leido correctamente.")
+        time.sleep(1)
+
+    return lista_cuerpos
 
 
 def mostrar_lista_cuerpos(nombres):
@@ -257,10 +264,40 @@ def guardar_proceso(lista_cuerpos, fichero):
 ##############################################################################
 
 def dibujar(lista_cuerpos):
-    #AQUI todo lo de pygame, dibujar la pantalla, la generalisacion de calculos...
-    pass
+    pygame.init()   # iniciar la libreria
+
+    ANCHO = 800     # ancho en pixeles
+    ALTO = 800     # alto en pixeles
+
+    # crear la pantalla, pasamos una tupla con el ancho, alto
+    pygame.display.set_mode((ANCHO, ALTO))
+    pygame.display.set_caption("Simulacion de sistema orbital")
+
+    fin = False
+    while not fin:      # bucle principal
+        for event in pygame.event.get():    # capturar evento cierre
+            if event.type == pygame.QUIT:
+                fin = True
+        keys = pygame.key.get_pressed()  # obtener el estado de las teclas
+        if keys[pygame.K_q]:
+            fin == True
+
 
 ##############################################################################
+
+def salir():
+    opcion_salir = ex.excepciones_string_si_no("Estas seguro de que quieres salir? Si/No: ")
+    if opcion_salir == "Si":
+        opcion_salir_guardar = ex.excepciones_string_si_no("Quieres guardar el archivo antes de salir? Si/No: ")
+        if opcion_salir_guardar == "Si":
+            guardar(lista_cuerpos)
+        print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a innovadeusto@soporte.es")
+        time.sleep(2)
+        sys.exit(0)
+
+
+#############################################################################
+
 
 def menu_principal(lista_cuerpos):
     verdadero = True
@@ -281,14 +318,7 @@ def menu_principal(lista_cuerpos):
         elif opcion_menu_principal == "6":
             dibujar(lista_cuerpos)
         elif opcion_menu_principal == "q" or opcion_menu_principal == "Q":
-            opcion_salir = ex.excepciones_string_si_no("Estas seguro de que quieres salir? Si/No: ")
-            if opcion_salir == "Si":
-                opcion_salir_guardar = ex.excepciones_string_si_no("Quieres guardar el archivo antes de salir? Si/No: ")
-                if opcion_salir_guardar == "Si":
-                    guardar(lista_cuerpos)
-                print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a innovadeusto@soporte.es")
-                time.sleep(2)
-                sys.exit(0)
+            salir()
 
 
 ##############################################################################
