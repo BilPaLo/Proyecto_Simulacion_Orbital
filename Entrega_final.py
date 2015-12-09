@@ -4,6 +4,8 @@ import time
 import os
 import libreria_operaciones_tuplas
 import libreria_excepciones as ex
+import pygame
+import libreria_calculos_posiciones
 
 
 
