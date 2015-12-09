@@ -264,23 +264,22 @@ def guardar_proceso(lista_cuerpos, fichero):
 ##############################################################################
 
 def dibujar(lista_cuerpos):
-    pygame.init()   # iniciar la libreria
+    pygame.init()
 
-    ANCHO = 800     # ancho en pixeles
-    ALTO = 800     # alto en pixeles
+    ANCHO = 800
+    ALTO = 800
 
-    # crear la pantalla, pasamos una tupla con el ancho, alto
     pygame.display.set_mode((ANCHO, ALTO))
     pygame.display.set_caption("Simulacion de sistema orbital")
 
     fin = False
-    while not fin:      # bucle principal
-        for event in pygame.event.get():    # capturar evento cierre
+    while not fin:
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fin = True
-        keys = pygame.key.get_pressed()  # obtener el estado de las teclas
-        if keys[pygame.K_q]:
-            fin == True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    fin = True
 
 
 ##############################################################################
