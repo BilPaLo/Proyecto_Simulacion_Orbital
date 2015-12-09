@@ -1,0 +1,3 @@
+# Sistema Tierra – Luna
+nombre:Tierra, masa:5.9722e24, img: imgs/tierra.png, x: 0.0, y: 0.0, fijo: si, vx:0.0, vy:0.0
+nombre:Luna, masa:7.348e22, img: imgs/luna.png, x: 0.0, y: 384402e3, fijo: no, vx: 1023.055, vy: 0.0
