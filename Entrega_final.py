@@ -5,7 +5,7 @@ import os
 import libreria_operaciones_tuplas
 import libreria_excepciones as ex
 import pygame
-import libreria_calculos_posiciones
+import libreria_calculos_posiciones as cal
 
 
 
@@ -264,22 +264,62 @@ def guardar_proceso(lista_cuerpos, fichero):
 ##############################################################################
 
 def dibujar(lista_cuerpos):
+    tiempo_variacion = ex.excepciones_float("Introduce el incremento de cada paso de tiempo (s): ")
+
+    CONSTANTE_GRAVITATION_UNIVERSAL = 6.67384e-11
+    MASA_TIERRA = 5.9722e24
+    MASA_LUNA = 7.348e22
+    fuerza_gravitatoria_total = 0.0
+    posicion_tierra = (0.0, 0.0)
+    posicion_luna = (0.0, 384402e3)
+    distancia_tierra_luna = (0.0, 0.0)
+    fuerza_tierra_luna = (0.0, 0.0)
+    acceleracion_luna = (0.0, 0.0)
+    velocidad_luna = (1023.055, 0.0)
+    velocidad_tierra = (0.0, 0.0)
+    contador_1 = 0
+
     pygame.init()
 
     ANCHO = 800
     ALTO = 800
 
-    pygame.display.set_mode((ANCHO, ALTO))
+    pantalla = pygame.display.set_mode((ANCHO, ALTO))
     pygame.display.set_caption("Simulacion de sistema orbital")
+
+    img_Tierra = pygame.image.load("Tierra.png")
+    img_Luna = pygame.image.load("Luna.png")
+    escalado = 4.9e+11
 
     fin = False
     while not fin:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fin = True
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     fin = True
+
+
+        distancia_tierra_luna = cal.distanciaf(posicion_luna, posicion_tierra)
+        fuerza_tierra_luna = cal.fuerzaf(CONSTANTE_GRAVITATION_UNIVERSAL, MASA_TIERRA, MASA_LUNA, distancia_tierra_luna)
+        fuerza_gravitatoria_total = cal.fuerza_totalf(fuerza_tierra_luna, (0.0, 0.0))
+        acceleracion_luna = cal.acceleracionf(fuerza_tierra_luna, MASA_LUNA)
+        variacion_velocidad = cal.variacion_velocidadf(acceleracion_luna, tiempo_variacion)
+        velocidad_luna = cal.velocidadf(velocidad_luna, variacion_velocidad)
+        posicion_luna = cal.posicionf(posicion_luna, velocidad_luna, tiempo_variacion)
+
+        posicion_tierra_escalada = libreria_operaciones_tuplas.producto_escalar(posicion_tierra, 1/escalado)
+        posicion_luna_escalada = libreria_operaciones_tuplas.producto_escalar(posicion_luna, 1/escalado)
+
+
+        pantalla.fill((0, 0, 0))
+
+        pantalla.blit(img_Tierra, posicion_tierra_escalada)
+        pantalla.blit(img_Luna, posicion_luna_escalada)
+        pygame.display.flip()     # intercambiar buffers
+
+
 
 
 ##############################################################################
