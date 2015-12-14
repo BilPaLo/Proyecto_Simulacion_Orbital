@@ -1,0 +1,5 @@
+ancho_pantalla: 800
+alto_pantalla: 800
+ancho_espacio: 4.9e+11
+alto_espacio: 4.9e+11
+paso_tiempo: 1500

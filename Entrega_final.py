@@ -17,7 +17,7 @@ def os_usuario():
 
 ###############################################################################
 
-#AQUI
+
 def iniciar():
     os_usuario()
     lista_cuerpos = []
@@ -31,7 +31,7 @@ def iniciar():
 
     while os.path.isfile(nombre_fichero) == False or nombre_fichero == "q" or nombre_fichero == "Q":
         print("No existe ese fichero.\n")
-        nombre_fichero = ex.excepciones_string("Escriba que fichero desea leer: ")
+        nombre_fichero = ex.excepciones_string("Escriba que fichero desea leer o pulsas q o Q para salir del programa: ")
         if nombre_fichero == "q" or nombre_fichero == "Q":
             sys.exit(0)
         else:
@@ -64,6 +64,67 @@ def iniciar():
         time.sleep(1)
 
     return lista_cuerpos
+
+def iniciar_pantalla():
+    os_usuario()
+    config_pantalla = []
+
+    nombre_fichero = ex.excepciones_string("Escriba el nombre del fichero del que desea cargar los datos de configuracion de la pantalla: ")
+    if nombre_fichero == "q" or nombre_fichero == "Q":
+        sys.exit(0) # Mejor volver al menu no?
+    else:
+        if nombre_fichero.find(".txt") == -1:
+            nombre_fichero += ".txt"
+
+    while os.path.isfile(nombre_fichero) == False or nombre_fichero == "q" or nombre_fichero == "Q":
+        print("No existe ese fichero.\n")
+        nombre_fichero = ex.excepciones_string("Escriba que fichero desea leer o pulsas q o Q para salir del programa: ")
+        if nombre_fichero == "q" or nombre_fichero == "Q":
+            sys.exit(0) # Mejor volver al menu, no?
+        else:
+            if nombre_fichero.find(".txt") == -1:
+                nombre_fichero += ".txt"
+
+    else:
+        fichero = open(nombre_fichero, "r")
+
+        fin_fichero = False
+        while not fin_fichero:
+            linea = fichero.readline()
+            if len(linea) == 0:
+                fin_fichero = True
+            else:
+                if "ancho_pantalla:" in linea:
+                    dato_temp = linea.split(": ")
+                    ancho_pantalla = float(dato_temp[1])
+                    ancho_pantalla = ancho_pantalla.strip()
+                    config_pantalla.append(ancho_pantalla)
+                if "alto_pantalla:" in linea:
+                    dato_temp = linea.split(": ")
+                    alto_pantalla = float(dato_temp[1])
+                    alto_pantalla = alto_pantalla.strip()
+                    config_pantalla.append(alto_pantalla)
+                if "ancho_espacio:" in linea:
+                    dato_temp = linea.split(": ")
+                    ancho_espacio = float(dato_temp[1])
+                    ancho_espacio = ancho_espacio.strip()
+                    config_pantalla.append(ancho_espacio)
+                if "alto_espacio:" in linea:
+                    dato_temp = linea.split(": ")
+                    alto_espacio = float(dato_temp[1])
+                    alto_espacio = alto_espacio.strip()
+                    config_pantalla.append(alto_espacio)
+                if "paso_tiempo:" in linea:
+                    dato_temp = linea.split(": ")
+                    paso_tiempo = float(dato_temp[1])
+                    paso_tiempo = paso_tiempo.strip()
+                    config_pantalla.append(paso_tiempo)
+
+
+        print("Se ha leido correctamente.")
+        time.sleep(1)
+
+    return config_pantalla
 
 
 def mostrar_lista_cuerpos(nombres):
@@ -264,6 +325,7 @@ def guardar_proceso(lista_cuerpos, fichero):
 ##############################################################################
 
 def dibujar(lista_cuerpos):
+    configuracion = iniciar_pantalla()
     tiempo_variacion = ex.excepciones_float("Introduce el incremento de cada paso de tiempo (s): ")
 
     CONSTANTE_GRAVITATION_UNIVERSAL = 6.67384e-11
@@ -281,10 +343,13 @@ def dibujar(lista_cuerpos):
 
     pygame.init()
 
-    ANCHO = 800
-    ALTO = 800
+    ANCHO_PANTALLA = configuracion[0]
+    ALTO_PANTALLA = configuracion[1]
+    ANCHO_ESPACIO = configuracion[2]
+    ALTO_ESPACIO = configuracion[3]
+    paso_tiempo = configuracion[4]
 
-    pantalla = pygame.display.set_mode((ANCHO, ALTO))
+    pantalla = pygame.display.set_mode((ANCHO_PANTALLA, ALTO_PANTALLA))
     pygame.display.set_caption("Simulacion de sistema orbital")
 
     img_Tierra = pygame.image.load("Tierra.png")
@@ -342,7 +407,7 @@ def menu_principal(lista_cuerpos):
     verdadero = True
     while verdadero:
         os_usuario()
-        print("Menu Principal:\n\n1. Mostrar\n2. Anadir un cuerpo nuevo\n3. Eliminar un cuerpo\n4. Modificar los datos de un cuerpo\n5. Guardar\n6. Lanzar simulacion grafica")
+        print("Menu Principal:\n\n1. Mostrar lista de cuerpos cargados\n2. Anadir un cuerpo nuevo\n3. Eliminar un cuerpo\n4. Modificar los datos de un cuerpo\n5. Guardar\n6. Lanzar simulacion grafica")
         opcion_menu_principal = ex.excepciones_int_rango_exit("\nIntroduce que opcion desea realizar, pulsa q/Q para salir: ", 1, 6)
         if opcion_menu_principal == "1":
             mostrar_lista_cuerpos(lista_cuerpos)

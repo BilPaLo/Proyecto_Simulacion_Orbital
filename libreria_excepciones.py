@@ -62,7 +62,6 @@ def excepciones_string(texto_input):
             print("No has insertado texto")
     return valor
 
-#AQUI
 def excepciones_exit(texto_input):
     dato_valido = False
     while not dato_valido:
