@@ -2,7 +2,7 @@ import sys
 import os.path
 import time
 import os
-import libreria_operaciones_tuplas
+import libreria_operaciones_tuplas as tuplas
 import libreria_excepciones as ex
 import pygame
 import libreria_calculos_posiciones as cal
@@ -349,8 +349,6 @@ def dibujar(lista_cuerpos):
     ALTO_ESPACIO = configuracion[3]
     paso_tiempo = configuracion[4]
 
-    pantalla = pygame.display.set_mode((ANCHO_PANTALLA, ALTO_PANTALLA))
-    pygame.display.set_caption("Simulacion de sistema orbital")
 
     img_Tierra = pygame.image.load("Tierra.png")
     img_Luna = pygame.image.load("Luna.png")
@@ -358,6 +356,9 @@ def dibujar(lista_cuerpos):
 
     fin = False
     while not fin:
+        pantalla = pygame.display.set_mode((ANCHO_PANTALLA, ALTO_PANTALLA))
+        pygame.display.set_caption("Simulacion de sistema orbital")
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fin = True
@@ -374,8 +375,8 @@ def dibujar(lista_cuerpos):
         velocidad_luna = cal.velocidadf(velocidad_luna, variacion_velocidad)
         posicion_luna = cal.posicionf(posicion_luna, velocidad_luna, tiempo_variacion)
 
-        posicion_tierra_escalada = libreria_operaciones_tuplas.producto_escalar(posicion_tierra, 1/escalado)
-        posicion_luna_escalada = libreria_operaciones_tuplas.producto_escalar(posicion_luna, 1/escalado)
+        posicion_tierra_escalada = tuplas.producto_escalar(posicion_tierra, 1/escalado)
+        posicion_luna_escalada = tuplas.producto_escalar(posicion_luna, 1/escalado)
 
 
         pantalla.fill((0, 0, 0))
@@ -384,7 +385,7 @@ def dibujar(lista_cuerpos):
         pantalla.blit(img_Luna, posicion_luna_escalada)
         pygame.display.flip()     # intercambiar buffers
 
-
+    pygame.quit()
 
 
 ##############################################################################
