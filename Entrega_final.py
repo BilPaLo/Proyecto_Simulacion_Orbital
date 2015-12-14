@@ -398,6 +398,7 @@ def salir():
             guardar(lista_cuerpos)
         print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a innovadeusto@soporte.es")
         time.sleep(2)
+        os_usuario()
         sys.exit(0)
 
 
