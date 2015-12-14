@@ -96,28 +96,28 @@ def iniciar_pantalla():
             else:
                 if "ancho_pantalla:" in linea:
                     dato_temp = linea.split(": ")
-                    ancho_pantalla = float(dato_temp[1])
-                    ancho_pantalla = ancho_pantalla.strip()
+                    ancho_pantalla = dato_temp[1]
+                    ancho_pantalla = int(ancho_pantalla.strip())
                     config_pantalla.append(ancho_pantalla)
                 if "alto_pantalla:" in linea:
                     dato_temp = linea.split(": ")
-                    alto_pantalla = float(dato_temp[1])
-                    alto_pantalla = alto_pantalla.strip()
+                    alto_pantalla = dato_temp[1]
+                    alto_pantalla = int(alto_pantalla.strip())
                     config_pantalla.append(alto_pantalla)
                 if "ancho_espacio:" in linea:
                     dato_temp = linea.split(": ")
-                    ancho_espacio = float(dato_temp[1])
-                    ancho_espacio = ancho_espacio.strip()
+                    ancho_espacio = dato_temp[1]
+                    ancho_espacio = float(ancho_espacio.strip())
                     config_pantalla.append(ancho_espacio)
                 if "alto_espacio:" in linea:
                     dato_temp = linea.split(": ")
-                    alto_espacio = float(dato_temp[1])
-                    alto_espacio = alto_espacio.strip()
+                    alto_espacio = dato_temp[1]
+                    alto_espacio = float(alto_espacio.strip())
                     config_pantalla.append(alto_espacio)
                 if "paso_tiempo:" in linea:
                     dato_temp = linea.split(": ")
-                    paso_tiempo = float(dato_temp[1])
-                    paso_tiempo = paso_tiempo.strip()
+                    paso_tiempo = dato_temp[1]
+                    paso_tiempo = float(paso_tiempo.strip())
                     config_pantalla.append(paso_tiempo)
 
 
