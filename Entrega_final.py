@@ -339,7 +339,6 @@ def dibujar(lista_cuerpos):
     acceleracion_luna = (0.0, 0.0)
     velocidad_luna = (1023.055, 0.0)
     velocidad_tierra = (0.0, 0.0)
-    contador_1 = 0
 
     pygame.init()
 
@@ -352,7 +351,10 @@ def dibujar(lista_cuerpos):
 
     img_Tierra = pygame.image.load("Tierra.png")
     img_Luna = pygame.image.load("Luna.png")
-    escalado = 4.9e+11
+    tamano_img_tierra = (75,75)
+    tamano_img_luna = (25, 25)
+    img_Tierra = pygame.transform.scale(img_Tierra, tamano_img_tierra)
+    img_Luna = pygame.transform.scale(img_Luna, tamano_img_luna)
 
     fin = False
     while not fin:
@@ -375,8 +377,12 @@ def dibujar(lista_cuerpos):
         velocidad_luna = cal.velocidadf(velocidad_luna, variacion_velocidad)
         posicion_luna = cal.posicionf(posicion_luna, velocidad_luna, tiempo_variacion)
 
-        posicion_tierra_escalada = tuplas.producto_escalar(posicion_tierra, 1/escalado)
-        posicion_luna_escalada = tuplas.producto_escalar(posicion_luna, 1/escalado)
+        posicion_tierra = (((posicion_tierra[0]/ ANCHO_ESPACIO) * 800), ((posicion_tierra[1]/ ALTO_ESPACIO) * 800))
+        posicion_luna = (((posicion_luna[0]/ ANCHO_ESPACIO) *  800), ((posicion_luna[1]/ ALTO_ESPACIO) * 800))
+
+        posicion_tierra_escalada = ((posicion_tierra[0] + (ANCHO_PANTALLA/2) - (tamano_img_tierra[0]/2)), (posicion_tierra[1] + (ALTO_PANTALLA/2) - (tamano_img_tierra[1]/2)))
+        posicion_luna_escalada = ((posicion_luna[0] + (ANCHO_PANTALLA/2) - (tamano_img_luna[0]/2)), (posicion_luna[1] + (ALTO_PANTALLA/2) - (tamano_img_luna[1]/2)))
+
 
 
         pantalla.fill((0, 0, 0))
