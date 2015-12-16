@@ -1,11 +1,13 @@
 import sys
+import os
 import os.path
 import time
-import os
-import libreria_operaciones_tuplas as tuplas
-import libreria_excepciones as ex
 import pygame
+
+import libreria_excepciones as ex
 import libreria_calculos_posiciones as cal
+import libreria_operaciones_tuplas as tuplas
+
 from planeta import Planeta
 
 
@@ -151,7 +153,6 @@ def detalles_cuerpo(nombres):
     opcion_detalles_cuerpo = ex.excepciones_int_rango("\nNumero del cuerpo que quieres ver: ", 1, len(nombres))
     opcion_detalles_cuerpo = int(opcion_detalles_cuerpo)
     print(nombres[opcion_detalles_cuerpo - 1])
-    #nombres[opcion_detalles_cuerpo - 1].imprimir()
 
     opcion_detalles_cuerpo_si_no = ex.excepciones_string_si_no("Quieres volver al menu principal? (Si) o quieres ver otro cuerpo? (No): ")
     if opcion_detalles_cuerpo_si_no == "No":
@@ -176,7 +177,9 @@ def anadir_cuerpo(nombres):
         masa = float(input("Masa: "))
 
     img = ex.excepciones_string("\nNombre de fichero de la imagen: ")
-    # Comprobar que la imagen exista
+    while os.path.isfile(img) == False:
+        print("No existe ese fichero.\n")
+        img = ex.excepciones_string("Nombre de fichero de la imagen: ")
     coordenada_x = ex.excepciones_float("\nCoordenada x del cuerpo: ")
     coordenada_y = ex.excepciones_float("\nCoordenada y del cuerpo: ")
     flag_fijo = ex.excepciones_string_si_no("\nEs fijo ese cuerpo? Si/No: ")
@@ -309,6 +312,17 @@ def guardar_proceso(lista_cuerpos, fichero):
     fichero.close()
     time.sleep(1)
 
+def salir():
+    opcion_salir = ex.excepciones_string_si_no("Estas seguro de que quieres salir? Si/No: ")
+    if opcion_salir == "Si":
+        opcion_salir_guardar = ex.excepciones_string_si_no("Quieres guardar el archivo antes de salir? Si/No: ")
+        if opcion_salir_guardar == "Si":
+            guardar(lista_cuerpos)
+        print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a innovadeusto@soporte.es")
+        time.sleep(2)
+        os_usuario()
+        sys.exit(0)
+
 ##############################################################################
 
 def dibujar(lista_cuerpos):
@@ -329,14 +343,14 @@ def dibujar(lista_cuerpos):
     pygame.display.set_caption("Simulacion de sistema orbital")
 
 
-    img_Tierra = lista_cuerpos[0].img
-    img_Luna = lista_cuerpos[1].img
-    img_Tierra = pygame.image.load(img_Tierra)
-    img_Luna = pygame.image.load(img_Luna)
-    tamano_img_tierra = (75,75)
-    tamano_img_luna = (25, 25)
-    img_Tierra = pygame.transform.scale(img_Tierra, tamano_img_tierra)
-    img_Luna = pygame.transform.scale(img_Luna, tamano_img_luna)
+    img_fijo = lista_cuerpos[0].img
+    img_planeta = lista_cuerpos[1].img
+    img_fijo = pygame.image.load(img_fijo)
+    img_planeta = pygame.image.load(img_planeta)
+    tamano_img_fijo = (75,75)
+    tamano_img_planeta = (25, 25)
+    img_fijo = pygame.transform.scale(img_fijo, tamano_img_fijo)
+    img_planeta = pygame.transform.scale(img_planeta, tamano_img_planeta)
 
     fin = False
     while not fin:
@@ -348,47 +362,34 @@ def dibujar(lista_cuerpos):
                 if event.key == pygame.K_q:
                     fin = True
 
-        # calcular
         contador = 1
         while contador < len(lista_cuerpos):
-            distancia_tierra_luna = lista_cuerpos[contador].distanciaf(lista_cuerpos[0].posicion)
-            fuerza_tierra_luna = lista_cuerpos[contador].fuerzaf(CONSTANTE_GRAVITATION_UNIVERSAL, lista_cuerpos[0].MASA, distancia_tierra_luna)
-            fuerza_gravitatoria_total = lista_cuerpos[contador].fuerza_totalf(fuerza_tierra_luna, (0.0, 0.0))
-            lista_cuerpos[contador].acceleracion = lista_cuerpos[contador].acceleracionf(fuerza_tierra_luna)
+            # calcular
+            distancia_fijo_planeta = lista_cuerpos[contador].distanciaf(lista_cuerpos[0].posicion)
+            fuerza_fijo_planeta = lista_cuerpos[contador].fuerzaf(CONSTANTE_GRAVITATION_UNIVERSAL, lista_cuerpos[0].MASA, distancia_fijo_planeta)
+            fuerza_gravitatoria_total = lista_cuerpos[contador].fuerza_totalf(fuerza_fijo_planeta, (0.0, 0.0))
+            lista_cuerpos[contador].acceleracion = lista_cuerpos[contador].acceleracionf(fuerza_fijo_planeta)
             variacion_velocidad = lista_cuerpos[contador].variacion_velocidadf(tiempo_variacion)
             lista_cuerpos[contador].velocidad = lista_cuerpos[contador].velocidadf(variacion_velocidad)
             lista_cuerpos[contador].posicion = lista_cuerpos[contador].posicionf(tiempo_variacion)
 
-        # Ahora a cambiar esta parte
-        posicion_tierra = (((lista_cuerpos[0].posicion[0]/ ANCHO_ESPACIO) * ANCHO_PANTALLA), ((lista_cuerpos[0].posicion[1]/ ALTO_ESPACIO) * ALTO_PANTALLA))
-        posicion_luna = (((lista_cuerpos[1].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[1].posicion[1]/ ALTO_ESPACIO) * 300000))
+            # Conversion de metros a pixeles
+            posicion_fijo = (((lista_cuerpos[0].posicion[0]/ ANCHO_ESPACIO) * ANCHO_PANTALLA), ((lista_cuerpos[0].posicion[1]/ ALTO_ESPACIO) * ALTO_PANTALLA))
+            posicion_planeta = (((lista_cuerpos[contador].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[contador].posicion[1]/ ALTO_ESPACIO) * 300000))
 
-        posicion_tierra_escalada = ((posicion_tierra[0] + (ANCHO_PANTALLA/2) - (tamano_img_tierra[0]/2)), (posicion_tierra[1] + (ALTO_PANTALLA/2) - (tamano_img_tierra[1]/2)))
-        posicion_luna_escalada = ((posicion_luna[0] + (ANCHO_PANTALLA/2) - (tamano_img_luna[0]/2)), (posicion_luna[1] + (ALTO_PANTALLA/2) - (tamano_img_luna[1]/2)))
+            posicion_fijo_escalada = ((posicion_fijo[0] + (ANCHO_PANTALLA/2) - (tamano_img_fijo[0]/2)), (posicion_fijo[1] + (ALTO_PANTALLA/2) - (tamano_img_fijo[1]/2)))
+            posicion_planeta_escalada = ((posicion_planeta[0] + (ANCHO_PANTALLA/2) - (tamano_img_planeta[0]/2)), (posicion_planeta[1] + (ALTO_PANTALLA/2) - (tamano_img_planeta[1]/2)))
 
 
-        # dibujar
-        pantalla.fill((0, 0, 0))
+            # dibujar
+            pantalla.fill((0, 0, 0))
 
-        pantalla.blit(img_Tierra, posicion_tierra_escalada)
-        pantalla.blit(img_Luna, posicion_luna_escalada)
-        pygame.display.flip()     # intercambiar buffers
+            pantalla.blit(img_fijo, posicion_fijo_escalada)
+            pantalla.blit(img_planeta, posicion_planeta_escalada)
+            pygame.display.flip()
+            contador += 1
 
     pygame.quit()
-
-
-##############################################################################
-
-def salir():
-    opcion_salir = ex.excepciones_string_si_no("Estas seguro de que quieres salir? Si/No: ")
-    if opcion_salir == "Si":
-        opcion_salir_guardar = ex.excepciones_string_si_no("Quieres guardar el archivo antes de salir? Si/No: ")
-        if opcion_salir_guardar == "Si":
-            guardar(lista_cuerpos)
-        print("Gracias por utilizar nuestro programa.\nPara cualquier problema enviar un email a innovadeusto@soporte.es")
-        time.sleep(2)
-        os_usuario()
-        sys.exit(0)
 
 
 #############################################################################
