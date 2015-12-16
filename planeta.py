@@ -13,7 +13,7 @@ class Planeta:
         self.acceleracion = acceleracion
 
     def __str__(self):
-        return ("Nombre: %s, Masa: %f, Imagen: %s, Coordenada x: %f, Coordenada y: %f, Fijo: %s , Velocidad x: %f, Velocidad y: %f" % (self.nombres, self.MASA, self.img, self.poscion[0], self.posicion[1], self.fijo, self.velocidad[0], self.velocidad[1]))
+        return ("Nombre: %s, Masa: %.2f, Imagen: %s, Coordenada x: %.2f, Coordenada y: %.2f, Fijo: %s , Velocidad x: %.2f, Velocidad y: %.2f" % (self.nombre, float(self.MASA), self.img, float(self.posicion[0]), float(self.posicion[1]), self.fijo, float(self.velocidad[0]), float(self.velocidad[1])))
 
 
     # Calculo de la distancia entre dos objetos, usando sus coordenadas

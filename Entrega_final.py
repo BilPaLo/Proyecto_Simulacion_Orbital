@@ -58,8 +58,8 @@ def iniciar():
                         dato_temp = dato_temp[1]
                         dato_temp = dato_temp.strip()
                         datos_cuerpo.append(dato_temp)
-                        planeta_temp = Planeta(datos_cuerpos[0], datos_cuerpos[1], datos_cuerpos[2], datos_cuerpos[5], (datos_cuerpos[3], datos_cuerpos[4]), (datos_cuerpos[6], datos_cuerpos[7]))
                         contador += 1
+                    planeta_temp = Planeta(datos_cuerpo[0], float(datos_cuerpo[1]), datos_cuerpo[2], datos_cuerpo[5], (float(datos_cuerpo[3]), float(datos_cuerpo[4])), (float(datos_cuerpo[6]), float(datos_cuerpo[7])))
                     lista_cuerpos.append(planeta_temp)
 
 
@@ -149,8 +149,9 @@ def mostrar_lista_cuerpos(nombres):
 
 def detalles_cuerpo(nombres):
     opcion_detalles_cuerpo = ex.excepciones_int_rango("\nNumero del cuerpo que quieres ver: ", 1, len(nombres))
-
-    print(nombres[opcion_detalles_cuerpo])
+    opcion_detalles_cuerpo = int(opcion_detalles_cuerpo)
+    print(nombres[opcion_detalles_cuerpo - 1])
+    #nombres[opcion_detalles_cuerpo - 1].imprimir()
 
     opcion_detalles_cuerpo_si_no = ex.excepciones_string_si_no("Quieres volver al menu principal? (Si) o quieres ver otro cuerpo? (No): ")
     if opcion_detalles_cuerpo_si_no == "No":
@@ -221,26 +222,25 @@ def modificar_datos(nombres):
         opcion_modificar_cuerpo = ex.excepciones_int_rango_exit("Introduce el numero del cuerpo que quiere modificar o q/Q para volver al menu principal: ", 1, len(nombres))
         if opcion_modificar_cuerpo.isnumeric():
             opcion_modificar_cuerpo = int(opcion_modificar_cuerpo)
-            for e in nombres[opcion_modificar_cuerpo - 1]:
+            while contador2 < 8:
                 if contador2 == 0:
-                    print("\n1. Nombre: ", end="")
+                    print("\n1. Nombre: %s" % nombres[opcion_modificar_cuerpo -1].nombre)
                 if contador2 == 1:
-                    print("2. Masa: ", end="")
+                    print("2. Masa: %.2f" % nombres[opcion_modificar_cuerpo -1].MASA)
                 if contador2 == 2:
-                    print("3. Imagen: ", end="")
+                    print("3. Imagen: %s" % nombres[opcion_modificar_cuerpo -1].img)
                 if contador2 == 3:
-                    print("4. Coordenada x: ", end="")
+                    print("4. Coordenada x: %.2f" % nombres[opcion_modificar_cuerpo -1].posicion[0])
                 if contador2 == 4:
-                    print("5. Coordenada y: ", end="")
+                    print("5. Coordenada y: %.2f" % nombres[opcion_modificar_cuerpo -1].posicion[1])
                 if contador2 == 5:
-                    print("6. Fijo: ", end="")
+                    print("6. Fijo: %s" %  nombres[opcion_modificar_cuerpo -1].fijo)
                 if contador2 == 6:
-                    print("7. Velocidad x: ", end="")
+                    print("7. Velocidad x: %.2f" %  nombres[opcion_modificar_cuerpo -1].velocidad[0])
                 if contador2 == 7:
-                    print("8. Velocidad y: ", end="")
-                print(e)
+                    print("8. Velocidad y: %.2f" %  nombres[opcion_modificar_cuerpo -1].velocidad[1])
                 contador2 += 1
-            opcion_modificar_dato = ex.excepciones_int_rango_exit("\nIntroduce el numero del dato que quieres modificar o pulsa q/Q para volver a selecionar un cuerpo: ", 1, len(nombres[int(opcion_modificar_cuerpo) - 1]))
+            opcion_modificar_dato = ex.excepciones_int_rango_exit("\nIntroduce el numero del dato que quieres modificar o pulsa q/Q para volver a selecionar un cuerpo: ", 1, 8)
             if opcion_modificar_dato.isnumeric():
                 opcion_modificar_dato = int(opcion_modificar_dato)
                 if opcion_modificar_dato == 1:
@@ -302,7 +302,7 @@ def guardar_proceso(lista_cuerpos, fichero):
     fichero = open(fichero, "w")
     if lista_cuerpos != []:
         for e in lista_cuerpos:
-            fichero.write("nombre:%s, masa:%f, img: %s, x: %f, y: %f, fijo: %s, vx:%f, vy:%f\n" % (e.nombre, float(e.MASA), e.img, float(e.posicion[0]), float(e.posicion[1]), e.fijo, float(e.velocidad[0]), float(e.velocidad[1])))
+            fichero.write("nombre:%s, masa:%f, img: %s, x: %f, y: %f, fijo: %s, vx:%f, vy:%f\n" % (e.nombre, e.MASA, e.img, e.posicion[0], e.posicion[1], e.fijo, e.velocidad[0], e.velocidad[1]))
         print("Se ha guardado correctamente.")
     else:
         print("No hay informacion para guardar.")
@@ -331,6 +331,8 @@ def dibujar(lista_cuerpos):
 
     img_Tierra = lista_cuerpos[0].img
     img_Luna = lista_cuerpos[1].img
+    img_Tierra = pygame.image.load(img_Tierra)
+    img_Luna = pygame.image.load(img_Luna)
     tamano_img_tierra = (75,75)
     tamano_img_luna = (25, 25)
     img_Tierra = pygame.transform.scale(img_Tierra, tamano_img_tierra)
@@ -358,8 +360,8 @@ def dibujar(lista_cuerpos):
             lista_cuerpos[contador].posicion = lista_cuerpos[contador].posicionf(tiempo_variacion)
 
         # Ahora a cambiar esta parte
-        posicion_tierra = (((posicion_tierra[0]/ ANCHO_ESPACIO) * ANCHO_PANTALLA), ((posicion_tierra[1]/ ALTO_ESPACIO) * ALTO_PANTALLA))
-        posicion_luna = (((posicion_luna[0]/ ANCHO_ESPACIO) *  300000), ((posicion_luna[1]/ ALTO_ESPACIO) * 300000))
+        posicion_tierra = (((lista_cuerpos[0].posicion[0]/ ANCHO_ESPACIO) * ANCHO_PANTALLA), ((lista_cuerpos[0].posicion[1]/ ALTO_ESPACIO) * ALTO_PANTALLA))
+        posicion_luna = (((lista_cuerpos[1].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[1].posicion[1]/ ALTO_ESPACIO) * 300000))
 
         posicion_tierra_escalada = ((posicion_tierra[0] + (ANCHO_PANTALLA/2) - (tamano_img_tierra[0]/2)), (posicion_tierra[1] + (ALTO_PANTALLA/2) - (tamano_img_tierra[1]/2)))
         posicion_luna_escalada = ((posicion_luna[0] + (ANCHO_PANTALLA/2) - (tamano_img_luna[0]/2)), (posicion_luna[1] + (ALTO_PANTALLA/2) - (tamano_img_luna[1]/2)))
