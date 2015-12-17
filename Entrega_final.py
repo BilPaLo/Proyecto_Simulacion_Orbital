@@ -11,15 +11,13 @@ import libreria_operaciones_tuplas as tuplas
 from planeta import Planeta
 
 
+###############################################################################
 
 def os_usuario():
     if sys.platform == "win32":
         os.system("cls")
     else:
         os.system('clear')
-
-###############################################################################
-
 
 def iniciar():
     os_usuario()
@@ -148,7 +146,6 @@ def mostrar_lista_cuerpos(nombres):
             detalles_cuerpo(nombres)
 
 
-
 def detalles_cuerpo(nombres):
     opcion_detalles_cuerpo = ex.excepciones_int_rango("\nNumero del cuerpo que quieres ver: ", 1, len(nombres))
     opcion_detalles_cuerpo = int(opcion_detalles_cuerpo)
@@ -157,7 +154,6 @@ def detalles_cuerpo(nombres):
     opcion_detalles_cuerpo_si_no = ex.excepciones_string_si_no("Quieres volver al menu principal? (Si) o quieres ver otro cuerpo? (No): ")
     if opcion_detalles_cuerpo_si_no == "No":
         mostrar_lista_cuerpos(nombres)
-
 
 
 def anadir_cuerpo(nombres):
@@ -286,6 +282,12 @@ def modificar_datos(nombres):
 
         return nombres
 
+def conversion_pixeles(lista_cuerpos, indice, tamano_img_planeta, ANCHO_ESPACIO, ALTO_ESPACIO, ANCHO_PANTALLA, ALTO_PANTALLA):
+    posicion_planeta = (((lista_cuerpos[indice].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[indice].posicion[1]/ ALTO_ESPACIO) * 300000))
+    posicion_planeta_escalada = ((posicion_planeta[0] + (ANCHO_PANTALLA/2) - (tamano_img_planeta[0]/2)), (posicion_planeta[1] + (ALTO_PANTALLA/2) - (tamano_img_planeta[1]/2)))
+
+    return posicion_planeta_escalada
+
 def guardar(lista_cuerpos):
     os_usuario()
     nombre_fichero = ex.excepciones_string("Escriba en que fichero desea guardar la informacion: ")
@@ -385,10 +387,7 @@ def dibujar(lista_cuerpos):
                 lista_cuerpos[contador].posicion = lista_cuerpos[contador].posicionf(tiempo_variacion)
 
                 # Conversion de metros a pixeles
-                posicion_planeta = (((lista_cuerpos[contador].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[contador].posicion[1]/ ALTO_ESPACIO) * 300000))
-
-                posicion_planeta_escalada = ((posicion_planeta[0] + (ANCHO_PANTALLA/2) - (tamano_img_planeta[0]/2)), (posicion_planeta[1] + (ALTO_PANTALLA/2) - (tamano_img_planeta[1]/2)))
-
+                posicion_planeta_escalada = conversion_pixeles(lista_cuerpos, contador, tamano_img_planeta, ANCHO_ESPACIO, ALTO_ESPACIO, ANCHO_PANTALLA, ALTO_PANTALLA)
 
                 # dibujar
                 pantalla.fill((0, 0, 0))
