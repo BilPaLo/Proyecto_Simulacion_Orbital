@@ -329,9 +329,9 @@ def salir():
 
 def dibujar(lista_cuerpos):
     configuracion = iniciar_pantalla()
-    tiempo_variacion = ex.excepciones_float("Introduce el incremento de cada paso de tiempo (s): ")
 
     CONSTANTE_GRAVITATION_UNIVERSAL = 6.67384e-11
+    fuerza_gravitatoria_total = (0.0, 0.0)
 
     pygame.init()
 
@@ -380,11 +380,11 @@ def dibujar(lista_cuerpos):
                 # calcular
                 distancia_fijo_planeta = lista_cuerpos[contador].distanciaf(lista_cuerpos[indice_fijo].posicion)
                 fuerza_fijo_planeta = lista_cuerpos[contador].fuerzaf(CONSTANTE_GRAVITATION_UNIVERSAL, lista_cuerpos[indice_fijo].MASA, distancia_fijo_planeta)
-                fuerza_gravitatoria_total = lista_cuerpos[contador].fuerza_totalf(fuerza_fijo_planeta, (0.0, 0.0))
-                lista_cuerpos[contador].acceleracion = lista_cuerpos[contador].acceleracionf(fuerza_fijo_planeta)
-                variacion_velocidad = lista_cuerpos[contador].variacion_velocidadf(tiempo_variacion)
+                fuerza_gravitatoria_total = lista_cuerpos[contador].fuerza_totalf(fuerza_fijo_planeta, fuerza_gravitatoria_total)
+                lista_cuerpos[contador].acceleracion = lista_cuerpos[contador].acceleracionf(fuerza_gravitatoria_total)
+                variacion_velocidad = lista_cuerpos[contador].variacion_velocidadf(paso_tiempo)
                 lista_cuerpos[contador].velocidad = lista_cuerpos[contador].velocidadf(variacion_velocidad)
-                lista_cuerpos[contador].posicion = lista_cuerpos[contador].posicionf(tiempo_variacion)
+                lista_cuerpos[contador].posicion = lista_cuerpos[contador].posicionf(paso_tiempo)
 
                 # Conversion de metros a pixeles
                 posicion_planeta_escalada = conversion_pixeles(lista_cuerpos, contador, tamano_img_planeta, ANCHO_ESPACIO, ALTO_ESPACIO, ANCHO_PANTALLA, ALTO_PANTALLA)
