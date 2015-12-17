@@ -369,12 +369,12 @@ def dibujar(lista_cuerpos):
         posicion_fijo_escalada = ((posicion_fijo[0] + (ANCHO_PANTALLA/2) - (tamano_img_fijo[0]/2)), (posicion_fijo[1] + (ALTO_PANTALLA/2) - (tamano_img_fijo[1]/2)))
 
         contador = 0
-        while contador <= len(lista_cuerpos):
+        while contador < len(lista_cuerpos):
 
             if contador != indice_fijo:
                 img_planeta = lista_cuerpos[contador].img
                 img_planeta = pygame.image.load(img_planeta)
-                tamano_img_planeta = (25, 25)
+                tamano_img_planeta = (50, 50)
                 img_planeta = pygame.transform.scale(img_planeta, tamano_img_planeta)
 
                 # calcular
@@ -395,7 +395,7 @@ def dibujar(lista_cuerpos):
                 pantalla.blit(img_fijo, posicion_fijo_escalada)
                 pantalla.blit(img_planeta, posicion_planeta_escalada)
                 pygame.display.flip()
-                contador += 1
+            contador += 1
 
     pygame.quit()
 
