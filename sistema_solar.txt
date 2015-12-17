@@ -1,0 +1,4 @@
+nombre: Sol, masa: 1.988e30, img: Sol.png, x: 0.0, y: 0.0, fijo: si, vx: 0.0, vy: 0.0
+nombre: Venus, masa: 4.868e24, img: Venus.png, x: 0.0, y: 1.082e11, fijo: no, vx: 3.502e4, vy: 0.0
+nombre: Marte, masa: 6.419e23, img: Marte.png, x: 0.0, y: 2.28e11, fijo: no, vx: 2.408e4, vy: 0.0
+nombre: Tierra, masa: 5.9722e24, img: Tierra.png, x: 0.0, y: 1.496e11, fijo: no, vx: 3e4, vy: 0.0

@@ -343,15 +343,6 @@ def dibujar(lista_cuerpos):
     pygame.display.set_caption("Simulacion de sistema orbital")
 
 
-    img_fijo = lista_cuerpos[0].img
-    img_planeta = lista_cuerpos[1].img
-    img_fijo = pygame.image.load(img_fijo)
-    img_planeta = pygame.image.load(img_planeta)
-    tamano_img_fijo = (75,75)
-    tamano_img_planeta = (25, 25)
-    img_fijo = pygame.transform.scale(img_fijo, tamano_img_fijo)
-    img_planeta = pygame.transform.scale(img_planeta, tamano_img_planeta)
-
     fin = False
     while not fin:
 
@@ -362,32 +353,50 @@ def dibujar(lista_cuerpos):
                 if event.key == pygame.K_q:
                     fin = True
 
-        contador = 1
-        while contador < len(lista_cuerpos):
-            # calcular
-            distancia_fijo_planeta = lista_cuerpos[contador].distanciaf(lista_cuerpos[0].posicion)
-            fuerza_fijo_planeta = lista_cuerpos[contador].fuerzaf(CONSTANTE_GRAVITATION_UNIVERSAL, lista_cuerpos[0].MASA, distancia_fijo_planeta)
-            fuerza_gravitatoria_total = lista_cuerpos[contador].fuerza_totalf(fuerza_fijo_planeta, (0.0, 0.0))
-            lista_cuerpos[contador].acceleracion = lista_cuerpos[contador].acceleracionf(fuerza_fijo_planeta)
-            variacion_velocidad = lista_cuerpos[contador].variacion_velocidadf(tiempo_variacion)
-            lista_cuerpos[contador].velocidad = lista_cuerpos[contador].velocidadf(variacion_velocidad)
-            lista_cuerpos[contador].posicion = lista_cuerpos[contador].posicionf(tiempo_variacion)
+        otro_contador = 0
+        for e in lista_cuerpos:
+            if e.fijo == "si":
+                img_fijo = e.img
+                indice_fijo = otro_contador
+            otro_contador += 1
 
-            # Conversion de metros a pixeles
-            posicion_fijo = (((lista_cuerpos[0].posicion[0]/ ANCHO_ESPACIO) * ANCHO_PANTALLA), ((lista_cuerpos[0].posicion[1]/ ALTO_ESPACIO) * ALTO_PANTALLA))
-            posicion_planeta = (((lista_cuerpos[contador].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[contador].posicion[1]/ ALTO_ESPACIO) * 300000))
+        img_fijo = pygame.image.load(img_fijo)
+        tamano_img_fijo = (75, 75)
+        img_fijo = pygame.transform.scale(img_fijo, tamano_img_fijo)
+        posicion_fijo = (((lista_cuerpos[indice_fijo].posicion[0]/ ANCHO_ESPACIO) * ANCHO_PANTALLA), ((lista_cuerpos[indice_fijo].posicion[1]/ ALTO_ESPACIO) * ALTO_PANTALLA))
+        posicion_fijo_escalada = ((posicion_fijo[0] + (ANCHO_PANTALLA/2) - (tamano_img_fijo[0]/2)), (posicion_fijo[1] + (ALTO_PANTALLA/2) - (tamano_img_fijo[1]/2)))
 
-            posicion_fijo_escalada = ((posicion_fijo[0] + (ANCHO_PANTALLA/2) - (tamano_img_fijo[0]/2)), (posicion_fijo[1] + (ALTO_PANTALLA/2) - (tamano_img_fijo[1]/2)))
-            posicion_planeta_escalada = ((posicion_planeta[0] + (ANCHO_PANTALLA/2) - (tamano_img_planeta[0]/2)), (posicion_planeta[1] + (ALTO_PANTALLA/2) - (tamano_img_planeta[1]/2)))
+        contador = 0
+        while contador <= len(lista_cuerpos):
+
+            if contador != indice_fijo:
+                img_planeta = lista_cuerpos[contador].img
+                img_planeta = pygame.image.load(img_planeta)
+                tamano_img_planeta = (25, 25)
+                img_planeta = pygame.transform.scale(img_planeta, tamano_img_planeta)
+
+                # calcular
+                distancia_fijo_planeta = lista_cuerpos[contador].distanciaf(lista_cuerpos[indice_fijo].posicion)
+                fuerza_fijo_planeta = lista_cuerpos[contador].fuerzaf(CONSTANTE_GRAVITATION_UNIVERSAL, lista_cuerpos[indice_fijo].MASA, distancia_fijo_planeta)
+                fuerza_gravitatoria_total = lista_cuerpos[contador].fuerza_totalf(fuerza_fijo_planeta, (0.0, 0.0))
+                lista_cuerpos[contador].acceleracion = lista_cuerpos[contador].acceleracionf(fuerza_fijo_planeta)
+                variacion_velocidad = lista_cuerpos[contador].variacion_velocidadf(tiempo_variacion)
+                lista_cuerpos[contador].velocidad = lista_cuerpos[contador].velocidadf(variacion_velocidad)
+                lista_cuerpos[contador].posicion = lista_cuerpos[contador].posicionf(tiempo_variacion)
+
+                # Conversion de metros a pixeles
+                posicion_planeta = (((lista_cuerpos[contador].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[contador].posicion[1]/ ALTO_ESPACIO) * 300000))
+
+                posicion_planeta_escalada = ((posicion_planeta[0] + (ANCHO_PANTALLA/2) - (tamano_img_planeta[0]/2)), (posicion_planeta[1] + (ALTO_PANTALLA/2) - (tamano_img_planeta[1]/2)))
 
 
-            # dibujar
-            pantalla.fill((0, 0, 0))
+                # dibujar
+                pantalla.fill((0, 0, 0))
 
-            pantalla.blit(img_fijo, posicion_fijo_escalada)
-            pantalla.blit(img_planeta, posicion_planeta_escalada)
-            pygame.display.flip()
-            contador += 1
+                pantalla.blit(img_fijo, posicion_fijo_escalada)
+                pantalla.blit(img_planeta, posicion_planeta_escalada)
+                pygame.display.flip()
+                contador += 1
 
     pygame.quit()
 
