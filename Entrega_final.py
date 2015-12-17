@@ -283,7 +283,7 @@ def modificar_datos(nombres):
         return nombres
 
 def conversion_pixeles(lista_cuerpos, indice, tamano_img_planeta, ANCHO_ESPACIO, ALTO_ESPACIO, ANCHO_PANTALLA, ALTO_PANTALLA):
-    posicion_planeta = (((lista_cuerpos[indice].posicion[0]/ ANCHO_ESPACIO) *  300000), ((lista_cuerpos[indice].posicion[1]/ ALTO_ESPACIO) * 300000))
+    posicion_planeta = (((lista_cuerpos[indice].posicion[0]/ ANCHO_ESPACIO) *  800), ((lista_cuerpos[indice].posicion[1]/ ALTO_ESPACIO) * 800))
     posicion_planeta_escalada = ((posicion_planeta[0] + (ANCHO_PANTALLA/2) - (tamano_img_planeta[0]/2)), (posicion_planeta[1] + (ALTO_PANTALLA/2) - (tamano_img_planeta[1]/2)))
 
     return posicion_planeta_escalada
