@@ -365,9 +365,8 @@ def dibujar(lista_cuerpos):
         img_fijo = pygame.image.load(img_fijo)
         tamano_img_fijo = (75, 75)
         img_fijo = pygame.transform.scale(img_fijo, tamano_img_fijo)
-        posicion_fijo = (((lista_cuerpos[indice_fijo].posicion[0]/ ANCHO_ESPACIO) * ANCHO_PANTALLA), ((lista_cuerpos[indice_fijo].posicion[1]/ ALTO_ESPACIO) * ALTO_PANTALLA))
-        posicion_fijo_escalada = ((posicion_fijo[0] + (ANCHO_PANTALLA/2) - (tamano_img_fijo[0]/2)), (posicion_fijo[1] + (ALTO_PANTALLA/2) - (tamano_img_fijo[1]/2)))
-
+        posicion_fijo_escalada = conversion_pixeles(lista_cuerpos, indice_fijo, tamano_img_fijo, ANCHO_ESPACIO, ALTO_ESPACIO, ANCHO_PANTALLA, ALTO_PANTALLA)
+        
         contador = 0
         while contador < len(lista_cuerpos):
 
